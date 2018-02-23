@@ -19,7 +19,7 @@
 		
 	//$sql1 = "SELECT name,value FROM `poruwa` WHERE `name` = '$d';";
 	$result = mysqli_query($connection,$sql1);
-	$output = "<table border=1>";
+	$output = "<table border=1 class="."table table-condensed".">";
 	$output .="<tr>";	
 	$output .="<th>"."Name"."</th>";
 	$output .="<th>"."Value"."</th>";

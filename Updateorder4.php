@@ -4,7 +4,7 @@
 <?php
 					 
 	$billNo = $_POST['id95'];
-	alert('Hello');
+	//alert('Hello');
 	$sql2 ="SELECT * FROM `worker` WHERE `wname` = '$billNo';";//"SELECT * FROM `worker` WHERE `wname` = '$billNo'";
 	$result2 = mysqli_query($connection,$sql2);
 	$out = array();

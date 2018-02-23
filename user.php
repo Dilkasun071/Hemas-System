@@ -21,7 +21,7 @@
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UOR|Forum</title>
+<title>HEMAS|System</title>
 <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title></title>
@@ -36,6 +36,7 @@
 
 	<script type="text/JavaScript" src="js/jquery.js"></script>
     <script type="text/JavaScript" src="js/jsUser.js"></script>
+    <script type="text/javascript" src="ajaxFunction.js"></script>
     
     <link rel="stylesheet" type="text/css" href="css/mainWebcam.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
@@ -45,6 +46,9 @@
 </head>
 
 <body >
+
+	
+
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#"><img src="images/uorlg1.png" style="width: 23px;"></a>
   <a class="navbar-brand" href="#">Hemas</a>
@@ -97,8 +101,6 @@
         <button type="button" class="btn btn-primary" style="display: none;background-color: #121212;" id="bWR">Remove</button>
         <button type="button" class="btn btn-primary" id="TbIP">Item Parts</button>
         <button type="button" class="btn btn-primary" style="display: none;background-color: #121212;" id="bIPA">Add</button>
-        <button type="button" class="btn btn-primary" style="display: none;background-color: #121212;" id="bIPV">View</button>
-        <button type="button" class="btn btn-primary" style="display: none;background-color: #121212;" id="bIPU">Updates</button>
         <button type="button" class="btn btn-primary" style="display: none;background-color: #121212;" id="bIPR">Remove</button>
         <script type="text/javascript">
         	$(document).ready(function(){
@@ -135,6 +137,13 @@
         <li class="breadcrumb-item active" aria-current="page">Data</li>
       </ol>
     </nav -->
+    <?php 
+
+		if ($done1 == '1'){
+			echo "Hello";
+			echo '<p class="error">Invaluser_id Username / Password</p>';
+		}
+	?>
     <div id="OA" style="display: none"  class="form-group" >
 	  				<form action="Order.php" method="post" enctype="multipart/form-data" class="form-control row" >
 						<div  style="display: none;padding: 20px 20px 20px 20px;width: 100%; " id="OA1" >
@@ -269,7 +278,7 @@
 								<input type="hidden" name="c_color_id" id="c_color_id" class="form-control">
 								<input type="file" name="c_color" class="form-control"></br>
 								Description<br>
-								<input type="text" size="50" maxlength="25" name="c_desc" class="form-control" /></br>
+								<input type="text" name="c_desc" class="form-control" /></br>
 								<input type="button" name="brOA3" id="brOA3" value="Back" class="btn btn-primary" style="float: left;">
 								<input type="button" name="bOA3" id="bOA3" value="Next" class="btn btn-primary" style="float: right;">
 						</div>
@@ -319,26 +328,52 @@
 						<input type="radio" name="radio0" value="" id="P">Selected by Poruwa</br>
 						<input type="radio" name="radio0" value="" id="S">Selected by SettyBack</br>
 						<input type="radio" name="radio0" value="" id="DR">Selected by Date Range</br -->
+						
+						<?php /*$sql1 = "SELECT * FROM customer as c , order as o, orderitem as ot , bill as b WHERE c.cg_bill = o.cb_bill AND c.cg_bill = ot.c_bill AND c.cg_bill = b.cl_bill AND c.cg_bill = '1';";
+
+	      					$result = mysqli_query($connection,$sql1);
+	      					if($row = mysql_fetch_array($result)){
+	      						echo $row['cg_name'];
+	      						echo $row['cb_hotel'];
+	      						echo $row['c_poruwa'];
+	      						echo $row['c_setty'];
+	      						echo $row['cl_total'];
+	      					}
+	      				 ?>*/
+	      				 ?>
 						</br>
 					</div>
 					<div id="D1" style="display: none;"><h2>Selected By Date</h2><br>
 						<label>Select Date Number</label>
-					
-		      				<input type="date" name="searchdate" id="searchdate" class="form-control">
-		      				<input type="button" value="search" name="searchdateno" id="searchdateno" class="form-control"><br>
-		   			
-	      				<div id="searchdatediv" style="overflow-x: scroll;"></div>
-	      				
+							<input type="date" name="searchdate" id="searchdate" class="form-control">
+							<input type="button" value="search" name="searchdateB" id="searchdateB" class="form-control"><br>	
+		      				<div id="searchdatediv" style="overflow-x: scroll;">
+		      					<script type="text/javascript">
+									$("#searchdateB").click(function(){
+										var idd1001 = $('#searchdate').val();
+										var request122 = $.ajax({
+											url: "Searchdatedata.php",
+											method: "POST",
+											data: { id1001 : idd1001 },
+											dataType: "html"
+										});
+										request122.done(function( msg1 ) {
+											$('#searchdatediv').html(msg1);
+										});
+										request122.fail(function( jqXHR, textStatus ) {
+											alert( "Request failed: " + textStatus );
+										});
+									});
+			      					</script>
+		      				</div>
 			      	</div>
+			      	
 			      	<div id="B1" style="display: none;"><h2>Selected By Bill</h2>
 						<label>Select Bill Number</label>
-					
 			      			<input type="text" name="searchbill" id="searchbill" class="form-control">
 			      			<input type="button" value="search" name="searchbillno" id="searchbillno" class="form-control"><br>		
-			      	
 		      			<div id="searchbilldiv" style="overflow-x: scroll;"></div>
 		      			<script type="text/javascript">
-	      					
 							$("#searchbillno").click(function(){
 								var idd1 = $('#searchbill').val();
 								var request12 = $.ajax({
@@ -347,18 +382,16 @@
 									data: { id1 : idd1 },
 									dataType: "html"
 								});
-								
 								request12.done(function( msg1 ) {
 									$('#searchbilldiv').html(msg1);
 								});
-									 
 								request12.fail(function( jqXHR, textStatus ) {
 									alert( "Request failed: " + textStatus );
 								});
 							});
 	      				</script>
 		      		</div>
-		      		<div id="N1" style="display: none;"><h2>Selected By Name</h2>
+		      		<!--div id="N1" style="display: none;"><h2>Selected By Name</h2>
 				   	
 			      			<input type="text" name="searchname" id="searchname" class="form-control">
 			      			<input type="button" value="search" name="searchnameno" id="searchnameno" class="form-control"><br>
@@ -392,7 +425,7 @@
 			      	<div id="DR1" style="display: none;"><h2>Selected By Data Range</h2><br>
 						<input type="date" name="c_from" class="form-control">  
 	    				<input type="date" name="c_to" class="form-control">
-	    			</div><br/><br/>
+	    			</div --><br/><br/>
 					</form>
 					
 	   			</div>	
@@ -415,13 +448,7 @@
 							Customer Mobile Number:  <br/>
 							<input type="text" name="ucg_mobile" id="ucg_mobile" class="form-control"></br>
 							Customer Home Number:  <br/>
-							<input type="text" name="ucg_home" id="ucg_home" class="form-control"></br>
-							Customer photo id:<br>
-							<input type="text" name="ucg_cusid" id="ucg_cusid" class="form-control">
-							Customer Photo
-							<input type="file" name="ucg_photo" id="ucg_photo">
-
-							<br>
+							<input type="text" name="ucg_home" id="ucg_home" class="form-control"></br><br>
 							<input type="button" name="ewq" id="ewq" value="Next" class="btn btn-primary" style="float: left;" disabled="">
 							<input type="button" name="bOA11" id="bOA11" value="Next" class="btn btn-primary" style="float: right;">
 							<script type="text/javascript">
@@ -525,11 +552,11 @@
 									}
 									echo "</select>";    
 								?><br><br>
-								<input type="checkbox" name="uc_kirikala" value = "Kirikala" id="ucb1" class="form-check-input form-control">Kirikala
-								<input type="checkbox" name="uc_kiribath" value="Kiribath" id="ucb2" class="form-check-input form-control">Kiribath
-								<input type="checkbox" name="uc_dryice" value="Dryice" id="ucb3" class="form-check-input form-control">Dry Ice
-								<input type="checkbox" name="uc_wine"  value="Wine" id="ucb4" class="form-check-input form-control">Wine
-								<input type="checkbox" name="uc_car" value="Car" id="ucb5" class="form-check-input form-control">Car
+								<input type="checkbox" name="uc_kirikala" value = "Kirikala" id="ucb1" class="form-check-input form-control">Kirikala<br>
+								<input type="checkbox" name="uc_kiribath" value="Kiribath" id="ucb2" class="form-check-input form-control">Kiribath<br>
+								<input type="checkbox" name="uc_dryice" value="Dryice" id="ucb3" class="form-check-input form-control">Dry Ice<br>
+								<input type="checkbox" name="uc_wine"  value="Wine" id="ucb4" class="form-check-input form-control">Wine<br>
+								<input type="checkbox" name="uc_car" value="Car" id="ucb5" class="form-check-input form-control">Car<br>
 							</div>	
 							Bridemade Color:<br>
 							<input type="file" name="uc_color" class="form-control"></br>
@@ -595,22 +622,22 @@
 
 								alert(ar1);
 								$("#uc_bill").val(ar1[0][1]);
-								if(ar1[0][7] == "1"){
+								if(ar1[0][6] == "1"){
 									$('#ucb1').prop('checked', true);
 								}
-								if(ar1[0][8] == "1"){
+								if(ar1[0][7] == "1"){
 									$('#ucb2').prop('checked', true);
 								}
-								if(ar1[0][9] == "1"){
+								if(ar1[0][8] == "1"){
 									$('#ucb3').prop('checked', true);
 								}
-								if(ar1[0][10] == "1"){
+								if(ar1[0][9] == "1"){
 									$('#ucb4').prop('checked', true);
 								}
-								if(ar1[0][11] == "1"){
+								if(ar1[0][10] == "1"){
 									$('#ucb5').prop('checked', true);
 								}
-								$("#uc_desc").val(ar1[0][12]);
+								$("#uc_desc").val(ar1[0][11]);
 							});
 
 							request91.fail(function( jqXHR, textStatus ) {
@@ -748,8 +775,50 @@
 					</div>
 					</form>
 				</div>
-				<div id="IU" style="display: none;margin: 40px 40px 20px 20px;width: 150%; ">
-					<label>Item Updates</label>
+				<div id="IU" style="display: none;margin: 40px 40px 20px 20px;width: 100%; ">
+						<form action="UpdateItem.php" class="form-control row" method="POST">
+							<h3>Item Updates</h3>
+							<select name="uc_category" id="uc_category" class="form-control" class="custom-select mb-2 mr-sm-2 mb-sm-0 form-control" ></br>
+									<option value="IPoruwa" name="IPoruwa" selected >Poruwa</option>
+									<option value="ISetty"  name="ISetty"> Setty Back</option>
+									<option value="IPack"  name="IPack">Package</option>
+							</select></br>
+							Enter Part Name:<br>
+							<input type="text" name="uc_partname" class="form-control" id="uc_partname" ><br>
+							<input type="button" id="uitemadd" name="uitemadd" class="form-control" id="uitemadd" value= "Select">	
+						    <div id="up" style="display: none;">
+							Value<br>
+							<input type="text" class="form-control" name="UIShowValue" id="UIShowValue" ><br>	
+							<input type="submit" name="addIUp" id="addIUp" value="Update" class="form-control">
+							</div>
+							
+						    <script type="text/javascript">
+						      	$(document).ready(function(){
+									$("#uitemadd").click(function(){
+							      		$("#up").show();
+							      		var idd1001 = $('#uc_partname').val();
+										var idd1002 = $('#uc_category').val();
+										var lol2 = [idd1001,idd1002];
+										var request1001 = $.ajax({
+										  	url: "Updateorder5.php",
+										  	method: "POST",
+										  	data: { id1001: lol2 },
+										  	dataType: "html"
+										}); 
+										request1001.done(function( msg94 ) {
+										 	var ar4 = JSON.parse("[" + msg94 + "]");
+										 	alert(ar4);
+										 	//$("#uc_partname").val(ar4[0][2]);
+										 	$("#UIShowValue").val(ar4[0][1]);
+										});
+										request1001.fail(function( jqXHR, textStatus ) {
+											alert( "Request failed: " + textStatus );
+										});
+									});
+
+								});
+						    </script>	
+						</form>					
 				</div>
 				<div id="IR" style="display: none;margin: 40px 40px 20px 20px;width: 100%; ">
 					<form action="removeItem.php" method="POST" class="form-control row">
@@ -799,12 +868,13 @@
 			      	<form class="form-control row"> 
 			      		Enter Name:<br>
 					<input type="text" name="w_Vname" id="w_Vname" class="form-control"><br>
-			      	<button id="workview" name="workview" class="form-control">View</button><br>
+			      	<input  type="button" id="workview" name="workview" class="form-control" value="View"><br>
 					
 					<div id="workV" style="overflow-x: scroll;margin: 20px 20px 20px 20px; ">
 						
-					</div>
+					</div></form>
 					<script type="text/javascript">
+					$(document).ready(function()){	
 						$("#workview").click(function(){
 							var idd671 = $('#w_Vname').val();
 							var request671 = $.ajax({
@@ -820,14 +890,16 @@
 								alert( "Request failed: " + textStatus );
 							});
 						});
+					});
 					</script>
 	
-			      	</form>
+			      	
 					
 			    </div>
-			    <div id="WU" style="display: none;padding: 20px 20px 20px 20px;width: 100%; "><h3>Worker Update</h3><br>
-			    	<form class="form-control row">
-			    		<div  id="wup">
+			    <div id="WU" style="display: none;padding: 20px 20px 20px 20px;width: 100%; ">
+			    	<form action="workerUpdate.php" method="POST" class="form-control row">
+			    		<h3>Worker Update</h3><br>
+			    	<div  id="wup">
 			    	Worker Name
 			    	<input type="text" name="Updatework" id="Updatework" class="form-control">
 			    	<input type="button" name="Updateworkbtn" id="Updateworkbtn" value="Update" class="form-control">
@@ -857,7 +929,7 @@
 							Worker's Father's Phone Number:<br/>
 							<input type="text" name="uw_fno" id="uw_fno" class="form-control"><br/>
 							</pre>
-							<button type="submit" id="uwadd" name="uwadd" class="btn-primary">Finish</button>	
+							<button type="submit" id="uwadd" name="uwadd" class="btn-success btn">Update</button>	
 						</form>	
 					</div>
 			    	</div>
@@ -877,7 +949,7 @@
 							});				
 							request95.done(function( msg95 ) {
 						 		var ar5 = JSON.parse("[" + msg95 + "]");
-						 		//alert(ar5[0][8]);alert(ar5[0][9]);alert(ar5[0][10]);alert(ar5[0][11]);
+						 		alert(ar5);//alert(ar5[0][9]);alert(ar5[0][10]);alert(ar5[0][11]);
 						 		$("#uw_date").val(ar5[0][1]);
 								$("#uw_name").val(ar5[0][2]);
 								$("#uw_address").val(ar5[0][3]);
@@ -904,128 +976,74 @@
 					</div>
 			    </div>
 			    <div id="IPA" style="display: none;padding: 20px 20px 20px 20px;width: 100%; ">
-			    	<form action="addIP.php" method="POST" class="form-control row">
+			    	<form  method="POST" class="form-control row">
 			    		<h3>Item Part Add</h3>
-			    		<br>Part Name<input type="text" name="ipname" class="form-control">
-			    		<br>Roof<input type="checkbox" name="iproof" class="form-control form-check-input">
-			    		Column<input type="checkbox" name="icolumn" class="form-control form-check-input">
-			    		Flower<input type="checkbox" name="iflower" class="form-control form-check-input"> 
-			    		<br>Side<input type="checkbox" name="iside" class="form-control form-check-input">
-			    		Kalas<input type="checkbox" name="ikalas" class="form-control form-check-input">
-			    		Base<input type="checkbox" name="ibase" class="form-control form-check-input">
-			    		<br>Stair<input type="checkbox" name="istair2" class="form-control form-check-input">
-			    		Stair Main<input type="checkbox" name="istairm" class="form-control form-check-input">
-			    		Sadhakada Pahana<input type="checkbox" name="isadakada" class="form-control form-check-input">
-			    		<br>Cuirton<input type="checkbox" name="icuirton" class="form-control form-check-input"><br>
-			    		<br><button type="submit" name="addIPbtn" id="addIPbtn" class="form-control">Add</button>
-			    	</form>
-			    </div>
-			    <div id="IPV" style="display: none;padding: 20px 20px 20px 20px;width: 100%; ">
-			    <br>
-			    	<form class="form-control row">
-			    	<h3>Item Part View</h3>
-		      		<input type="text" name="viewData" id="viewData" class="form-control">
-		      		<input type="button" value="View" name="viewIPbtn" id="viewIPbtn" class="form-control"><br>
-		   			<div id="ViewIPDiv" style="overflow-x: scroll;"></div>
-		   			<script type="text/javascript">
-		   				$("#viewIPbtn").click(function(){
-							var idd97 = $('#viewData').val();
-							var request97 = $.ajax({
-								url: "viewIP.php",
-						  		method: "POST",
-						  		data: { id97 : idd97 },
-						  		dataType: "html"
-							});
-							request97.done(function( msg97 ) {
-								$('#ViewIPDiv').html(msg97);
-							});
-							request97.fail(function( jqXHR, textStatus ) {
-								alert( "Request failed: " + textStatus );
-							});
-						});
-		   			</script>
-		   		</form>
-			    </div>
-			    <div id="IPU" style="display: none">
-			    	<form class="form-control row">
-			    	<h3>Item Part Update</h3><br>
-			    	Enter Update Item Part Name:<br>
-			    	<input type="text" name="uviewData" id="uviewData" class="form-control">
-		      		<input type="button" value="View" name="uviewIPbtn" id="uviewIPbtn" class="form-control"><br>
-			    	<div id="updateIPdiv">
-			    		<br>
-			    		<form action="updateIPart.php" method="POST">
-			    			<br>Roof<input type="checkbox" name="uiproof" id="uiproof" class="form-control form-check-input">
-			    			Column<input type="checkbox" name="uicolumn" id="uicolumn" class="form-control form-check-input">
-			    			Flower<input type="checkbox" name="uiflower" id="uiflower" class="form-control form-check-input">  
-			    			<br>Side<input type="checkbox" name="uiside" id="uiside" class="form-control form-check-input">
-			    			Kalas<input type="checkbox" name="uikalas" id="uikalas" class="form-control form-check-input">
-			    			Base<input type="checkbox" name="uibase" id="uibase" class="form-control form-check-input">
-			    			<br>Stair<input type="checkbox" name="uistair2" id="uistair2" class="form-control form-check-input">
-			    			Stair Main<input type="checkbox" name="uistairm" id="uistairm" class="form-control form-check-input">
-			    			Sadhakada Pahana<input type="checkbox" name="uisadakada" id="uisadakada" class="form-control form-check-input">
-			    			<br>Cuirton<input type="checkbox" name="uicuirton" id="uicuirton" class="form-control form-check-input"><br>
-			    			<br><button type="submit" name="uaddIPbtn" id="uaddIPbtn" class="form-control">Add</button>	
-			    		</form>
-			    	</form>	
-			    	</div>
+			    		Select Item<br>
+			    		<input type="button" name="ipporuwa" id="ipporuwa"  VALUE="Poruwa" class="form-control">
+			    		<input type="button" name="ipsetty" id="ipsetty"  VALUE="Setty" class="form-control">
+			    		<input type="button" name="ippack" id="ippack"  VALUE="Pack" class="form-control">
+			    		<script type="text/javascript">
+			    			$(document).ready(function(){
+			    				$('#ipporuwa').click(function(){
+			    					$('#ippr').show();
+			    					$('#ippa,#ipse').hide();
+			    				});
+								$('#ipsetty').click(function(){
+									$('#ipse').show();
+									$('#ippa,#ippr').hide();
+			    				});
+			    				$('#ippack').click(function(){
+			    					$('#ippa').show();
+			    					$('#ippr,#ipse').hide();
+			    				});
+			    			});
+			    		</script>
+			    		<div id="ippr" style="display: none;">
+			    			<form action="addIP.php" method="POST" class="form-control row">
+			    			Part Name<input type="text" name="ipname" class="form-control"><br>
+			    			Roof<input type="checkbox" name="iproof" class="form-control form-check-input"><br>
+			    			Column<input type="checkbox" name="icolumn" class="form-control form-check-input"><br>
+			    			Flower<input type="checkbox" name="iflower" class="form-control form-check-input"><br> 
+			    			Side<input type="checkbox" name="iside" class="form-control form-check-input"><br>
+			    			Kalas<input type="checkbox" name="ikalas" class="form-control form-check-input"><br>
+			    			Base<input type="checkbox" name="ibase" class="form-control form-check-input"><br>
+			    			Stair<input type="checkbox" name="istair2" class="form-control form-check-input"><br>
+			    			Stair Main<input type="checkbox" name="istairm" class="form-control form-check-input"><br>
+			    			Sadhakada Pahana<input type="checkbox" name="isadakada" class="form-control form-check-input"><br>
+			    			Cuirton<input type="checkbox" name="icuirton" class="form-control form-check-input"><br><br>
+			    			<button type="submit" name="addIPbtn" id="addIPbtn" class="form-control">Add</button>
+			    			</form>
+			    		</div>
+			    		<div id="ipse" style="display: none;">
+			    			<form action="addIPSe.php" method="POST" class="form-control row">
+			    			Part Name<input type="text" name="ipsename" class="form-control"><br>
+			    			Chair<input type="checkbox" name="ischair" class="form-control form-check-input"><br>
+			    			Setty<input type="checkbox" name="isetty" class="form-control form-check-input"><br><br>
+			    			<button type="submit" name="addIPsebtn" id="addIPsebtn" class="form-control">Add</button>
+			    			</form>
+			    		</div>
+						<div id="ippa" style="display: none;">
+							<form action="addIPPa.php" method="POST" class="form-control row">
+			    			Part Name<input type="text" name="ipaName" class="form-control"><br>
+			    			poruwa<input type="checkbox" name="ipaporuwar" class="form-control form-check-input"><br>
+			    			Setty<input type="checkbox" name="ipaetty" class="form-control form-check-input"><br><br>
+			    			<button type="submit" name="addIPaabtn" id="addIPaabtn" class="form-control">Add</button>
+			    			</form>
+						</div>
 			    		
-			    <script type="text/javascript">
-					$(document).ready(function(){	
-						
-						$("#uviewIPbtn").click(function(){
-						var idd98 = $('#uviewData').val();
-					
-						    var request98 = $.ajax({
-						  		url: "UpdateIP.php",
-						  		method: "POST",
-						  		data: { id98: idd98 },
-						  		dataType: "html"
-							});				
-							request98.done(function( msg98 ) {
-						 		var ar6 = JSON.parse("[" + msg98 + "]");
-						 		alert(ar6);
-						 		$("#uipname").val(ar6[0][1]);
-						 		if(ar6[0][2] == "1"){
-									$('#uiproof').prop('checked', true);
-								}
-								if(ar6[0][3] == "1"){
-									$('#uicolumn').prop('checked', true);
-								}
-								if(ar6[0][4] == "1"){
-									$('#uiflower').prop('checked', true);
-								}
-								if(ar6[0][5] == "1"){
-									$('#uiside').prop('checked', true);
-								}
-								if(ar6[0][6] == "1"){
-									$('#uikalas').prop('checked', true);
-								}
-								if(ar6[0][7] == "1"){
-									$('#uibase').prop('checked', true);
-								}
-								if(ar6[0][8] == "1"){
-									$('#uistair2').prop('checked', true);
-								}
-								if(ar6[0][9] == "1"){
-									$('#uistairm').prop('checked', true);
-								}
-								if(ar6[0][10] == "1"){
-									$('#uisadakada').prop('checked', true);
-								}
-								if(ar6[0][11] == "1"){
-									$('#uicuirton').prop('checked', true);
-								}
-								});
-							});	
-						});	    
-					</script>
+			    	</form>
 			    </div>
 			    <div id="IPR" style="display: none">
 			    	<br>
 			    	<form action="removeIP.php" method="POST" class="form-control row">
 						<h3>Item Part Remove</h3>
-						Enter Item Part Name:<br>
+						Item Part:<br>
+						<select name="uc_category" id="uc_category" class="form-control" class="custom-select mb-2 mr-sm-2 mb-sm-0 form-control" ></br>
+									<option value="IPoruwa" name="IPoruwa" selected >Poruwa</option>
+									<option value="ISetty"  name="ISetty"> Setty Back</option>
+									<option value="IPack"  name="IPack">Package</option>
+						</select></br>
+						Enter Item Part Name:<br>.
 						<input type="text" name="RIPname" id="RIPname" class="form-control"><br>
 			    	  	<button type="submit" id="RIPnameB" name="RIPnameB" class="form-control">Remove</button><br>
 					</form>
@@ -1034,32 +1052,34 @@
   <div class="col-sm-4">
      <div class="card text-center">
       <div class="card-header">
-        Updates
+        UpComing Work
       </div>
-      <div class="card-body">
-        <h4 class="card-title">Special title treatment</h4>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-      <div class="card-footer text-muted">
-        2 days ago
-      </div>
-      <div class="card-body">
-        <h4 class="card-title">Special title treatment</h4>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-      <div class="card-footer text-muted">
-        2 days ago
-      </div>
-      <div class="card-body">
-        <h4 class="card-title">Special title treatment</h4>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-      <div class="card-footer text-muted">
-        2 days ago
-      </div>
+      	<?php 
+ 		date_default_timezone_set('SriLanka/Colombo');
+ 		$datezone= date('Y-m-d');
+ 		$datezone1= '2018-01-31';
+ 		//$date->format('Y-m-d H:i:s');
+      $sql = "SELECT * FROM `order` WHERE `cb_odate` BETWEEN $datezone AND '2100-01-31' LIMIT 4";
+      $qdate = mysqli_query($connection,$sql);
+      if($qdate){
+      	while ($row = mysqli_fetch_array($qdate)) {
+      	echo "<div class='card-body'>";
+      	echo $row['cb_odate']." | ";
+      	echo $row['cb_hotel']." | ";
+      	echo $row['c_event']."<br>";
+      	echo "<a href='#' class='btn btn-primary'>do</a>";
+      	echo "</div>";
+      	echo"<div class='card-footer text-muted'>";
+        	echo"2 days ago";
+      	echo"</div>";
+      
+     	}	
+      }
+      else{
+
+      }
+      
+      ?>
     </div>
 
   </div>

@@ -4,7 +4,7 @@
 	$d = $_POST["id671"];
 	$sql1 = "SELECT wname,wdate,wpm,wph,wmph,wfph FROM `worker` WHERE `wname` = '$d';";	
 	$result = mysqli_query($connection,$sql1);
-	$output = "<table border=1>";
+	$output = "<table border=1 class="."table table-condensed".">";
 	$output .="<tr>";	
 	$output .="<th>"."Name"."</th>";
 	$output .="<th>"."Date"."</th>";
@@ -25,9 +25,9 @@
 			$output .="<td>".$row['wph']."</td>";
 			$output .="<td>".$row['wmph']."</td>";
 			$output .="<td>".$row['wfph']."</td>";
-			$m = $row['wname'];
-			$output .="<td>"."<Button id=d1 name =$m>"."Delete "."</Button>"."</td>";
-			$output .="<td>"."<Button id=u1 name =$m>"."Updates "."</Button>"."</td>";
+			//$m = $row['wname'];
+			//$output .="<td>"."<Button id=d1 name =$m>"."Delete "."</Button>"."</td>";
+			//$output .="<td>"."<Button id=u1 name =$m>"."Updates "."</Button>"."</td>";
 			$output .="</tr>";
 			
 		}

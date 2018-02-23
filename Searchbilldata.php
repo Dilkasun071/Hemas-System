@@ -1,5 +1,4 @@
 <?php require_once('inc/connection.php'); ?>
-<?php require_once('inc/CalenderCode.php'); ?>
 <?php require_once('inc/functions.php'); ?>
 
 <?php

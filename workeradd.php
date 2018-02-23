@@ -26,6 +26,7 @@
 	}else{
 		echo "unable Add<br>";
 	}
+	header('Location: user.php');
 } 
 		
 ?>

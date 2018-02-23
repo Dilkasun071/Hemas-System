@@ -17,7 +17,7 @@
 	$uw_fname = $_POST['uw_fname'];
 	$uw_fno = $_POST['uw_fno'];
 	
-	$c = "UPDATE `worker` SET `wdate`='$uw_date',`wadd`='$uw_address',`wpm`='$uw_mphone',`wid`='$uw_idnum',`wph`='$uw_hphone',`wphto`='1',`wmname`='$uw_mname',`wmph`='$uw_mno',`wfname`='$uw_fname',`wfph`='$uw_fno' WHERE `wname`='$uw_name';";
+	$c = "UPDATE `worker` SET `wdate`='$uw_date',`wadd`='$uw_address',`wpm`='$uw_mphone',`wid`='$uw_idnum',`wph`='$uw_hphone',`wmname`='$uw_mname',`wmph`='$uw_mno',`wfname`='$uw_fname',`wfph`='$uw_fno' WHERE `wname`='$uw_name';";
 
 	$Updatec = mysqli_query($connection,$c);
 	
@@ -26,7 +26,7 @@
 	}else{
 		echo "Not Done!";
 	}
-
+	header('Location: user.php');
 
 }
 ?>
